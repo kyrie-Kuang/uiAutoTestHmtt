@@ -15,6 +15,7 @@ from tools.read_yaml import read_yaml
 class CaseLogin(unittest.TestCase):
     def setUp(self):
         driver = GetDriver.get_web_driver(page.tt_url)
+        driver.implicitly_wait(5)
         self.pl = PageLogin(driver)
 
     def tearDown(self):
@@ -30,12 +31,15 @@ class CaseLogin(unittest.TestCase):
         self.pl.page_input_username(self.username)
         time.sleep(1)
         self.pl.page_input_code(self.code)
-        time.sleep(1)
+        time.sleep(2)
         self.pl.page_click_login_btn()
         time.sleep(1)
         user_name = self.pl.page_get_user_name()
         time.sleep(1)
-        self.assertEqual(user_name, self.expect)
+        try:
+            self.assertEqual(user_name, self.expect)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
